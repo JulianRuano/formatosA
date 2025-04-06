@@ -1,5 +1,7 @@
 package com.jpa.models;
 
+import java.util.List;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,8 +15,12 @@ import lombok.Setter;
 @AllArgsConstructor
 public class Rol {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+    
     @Column(nullable = false, length = 100)
     private String rol_asignado;
+
+    @OneToMany(mappedBy = "objRol")
+    private List<Historico> objHistorico;
 }

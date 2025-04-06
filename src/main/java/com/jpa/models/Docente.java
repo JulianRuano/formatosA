@@ -1,9 +1,21 @@
 package com.jpa.models;
 
-import jakarta.persistence.*;
+import java.util.List;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 public class Docente {
     @Id
@@ -21,5 +33,14 @@ public class Docente {
 
     @Column(nullable = false, length = 50, unique = true)
     private String nombreGrupo;
+
+    @ManyToMany(mappedBy = "objDocente")
+    private List<Observacion> objObservacion;
+
+    @OneToMany( mappedBy = "objDocente")
+    private List<FormatoA> objFormatoA;
+
+    @OneToMany( mappedBy = "objDocente")
+    private List<Historico> objHistorico;
 
 }
