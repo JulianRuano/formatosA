@@ -32,7 +32,7 @@ public class JpaApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		almacenarFormulario();
+		//almacenarFormulario();
 	}
 
 	@Transactional
