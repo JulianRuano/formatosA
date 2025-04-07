@@ -27,6 +27,7 @@ import lombok.RequiredArgsConstructor;
 
 @SpringBootApplication
 @RequiredArgsConstructor
+@Transactional
 public class JpaApplication implements CommandLineRunner {
 
 	private final IFormatoRepository formatoRepository;

@@ -27,7 +27,7 @@ public class Observacion {
     @JoinColumn(name = "idEvaluacion", nullable = false)
     private Evaluacion objEvaluacion;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER )
     @JoinTable(
         name = "Observacion_Docente", 
         joinColumns = @JoinColumn(name = "idObservacion", referencedColumnName = "id"),
