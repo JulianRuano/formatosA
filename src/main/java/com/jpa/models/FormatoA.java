@@ -29,7 +29,7 @@ public class FormatoA {
     @Column(nullable = false)
     private List<String> objetivosEspecificos;
 
-    @OneToOne(mappedBy = "objFormato", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    @OneToOne(mappedBy = "objFormato", cascade = {CascadeType.PERSIST})
     private Estado estado;
 
     @OneToMany(mappedBy = "objFormato")

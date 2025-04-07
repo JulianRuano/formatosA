@@ -22,7 +22,7 @@ public class Estado {
     @Column(nullable = false)
     private Date fechaRegistro;
 
-    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    @OneToOne
     @JoinColumn(name = "idFormatoA", referencedColumnName = "id")
     private FormatoA objFormato;
 
