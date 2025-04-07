@@ -26,7 +26,9 @@ import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 
 @SpringBootApplication
+
 @RequiredArgsConstructor
+@Transactional
 public class JpaApplication implements CommandLineRunner {
 
 	private final IFormatoRepository formatoRepository;
@@ -47,10 +49,11 @@ public class JpaApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		//almacenarFormulario();
+		//almacenarFormularioPPA(1);
 		//List<Integer> docentes = List.of(1, 2);
-		//crearObservacion(docentes, "Observaciones de ROA", 102);
-		consultarFormatoADocente(1);
+		//crearObservacion(docentes, "Observaciones de ROA", 1);
+		//consultarFormatoADocente(1);
+		listarObservacionesPorFormato(1);
 	}
 
 	@Transactional
@@ -164,6 +167,61 @@ public class JpaApplication implements CommandLineRunner {
 		}
 	}
 
+	@Transactional
+	public void listarObservacionesPorFormato(Integer idFormato) {
+        Optional<FormatoA> optionalFormato = formatoRepository.findById(idFormato);
+        if (!optionalFormato.isPresent()) {
+            System.out.println("Formato no encontrado.");
+            return;
+        }
 
+        FormatoA formato = optionalFormato.get();
+
+        System.out.println("====== DATOS DEL FORMATO ======");
+        System.out.println("ID: " + formato.getId());
+        System.out.println("Título: " + formato.getTitulo());
+        System.out.println("Objetivo General: " + formato.getObjetivoGeneral());
+
+        if (formato.getEstado() != null) {
+            System.out.println("Estado actual: " + formato.getEstado().getEstadoActual());
+        } else {
+            System.out.println("Estado: No definido");
+        }
+
+        List<Evaluacion> evaluaciones = formato.getEvaluacion();
+        if (evaluaciones == null || evaluaciones.isEmpty()) {
+            System.out.println("No hay evaluaciones asociadas.");
+            return;
+        }
+
+        for (Evaluacion eval : evaluaciones) {
+            System.out.println("\n--- EVALUACIÓN ---");
+            System.out.println("Concepto: " + eval.getConcepto());
+            System.out.println("Fecha Registro: " + eval.getFechaRegistroConcepto());
+            System.out.println("Coordinador: " + eval.getNombreCoordinador());
+
+            List<Observacion> observaciones = eval.getObservacion();
+            if (observaciones == null ) {
+                System.out.println("Sin observaciones.");
+                continue;
+            }
+
+            for (Observacion obs : observaciones) {
+                System.out.println("\n> Observación:");
+                System.out.println("Texto: " + obs.getObservacion());
+                System.out.println("Fecha: " + obs.getFechaRegistro());
+
+                List<Docente> docentes = obs.getObjDocente();
+                if (docentes == null || docentes.isEmpty()) {
+                    System.out.println("Sin docentes asociados.");
+                } else {
+                    System.out.println("Docentes que realizaron esta observación:");
+                    for (Docente d : docentes) {
+                        System.out.println("- " + d.getNombre() + " " + d.getApellido() + " (" + d.getCorreo() + ")");
+                    }
+                }
+            }
+        }
+    }
 
 }
