@@ -28,10 +28,10 @@ public class Docente {
     @Column(nullable = false, length = 50, unique = true)
     private String nombreGrupo;
 
-    @ManyToMany(mappedBy = "objDocente")
+    @ManyToMany(mappedBy = "objDocente", fetch = FetchType.EAGER)
     private List<Observacion> objObservacion;
 
-    @OneToMany( mappedBy = "objDocente")
+    @OneToMany( mappedBy = "objDocente", fetch = FetchType.EAGER)
     private List<FormatoA> objFormatoA;
 
     @OneToMany( mappedBy = "objDocente")

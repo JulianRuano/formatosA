@@ -8,8 +8,6 @@ import lombok.NoArgsConstructor;
 
 import jakarta.persistence.*;
 
-
-
 @Entity
 @Data
 @NoArgsConstructor
@@ -32,7 +30,7 @@ public class FormatoA {
     @OneToOne(mappedBy = "objFormato", cascade = {CascadeType.PERSIST})
     private Estado estado;
 
-    @OneToMany(mappedBy = "objFormato")
+    @OneToMany(mappedBy = "objFormato", fetch = FetchType.EAGER)
     private List<Evaluacion> evaluacion;
 
     @ManyToOne

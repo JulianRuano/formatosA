@@ -24,7 +24,7 @@ public class Evaluacion {
     private Date fechaRegistroConcepto;
 
     @Column(nullable = true)
-    private String nombreCoornador;
+    private String nombreCoordinador;
 
     @OneToMany(mappedBy = "objEvaluacion")
     private List<Observacion> observacion;

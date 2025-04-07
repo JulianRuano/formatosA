@@ -49,11 +49,12 @@ public class JpaApplication implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 		//almacenarFormulario();
 		//List<Integer> docentes = List.of(1, 2);
-		//crearObservacion(docentes, "Observaciones de ROA", 1);
+		//crearObservacion(docentes, "Observaciones de ROA", 102);
+		consultarFormatoADocente(1);
 	}
 
 	@Transactional
-	public void almacenarFormularioPPA(Integer idDocente, Integer idEstado) {
+	public void almacenarFormularioPPA(Integer idDocente) {
 		FormatoA formatoPPA = new FormatoPPA("Juan Perez", "Maria Lopez");
 		formatoPPA.setTitulo("Titulo PPA "+ idDocente);
 		formatoPPA.setObjetivoGeneral("Objetivo General PPA");
@@ -99,22 +100,19 @@ public class JpaApplication implements CommandLineRunner {
 
 		FormatoA formato = formataOptional.get();
 
-		Evaluacion evaluacion = null; //Intancia para guardar la evaluacion correspondite 
-		List<Evaluacion> lstEvaluaciones = formato.getEvaluacion();
+		Evaluacion evaluacion = null; 
 
-		if(lstEvaluaciones.isEmpty()) {
+		if(formato.getEvaluacion() == null || formato.getEvaluacion().isEmpty()) {
 
 			Evaluacion nuevaEvaluacion = new Evaluacion();
 			nuevaEvaluacion.setConcepto("Por establecer");
 			nuevaEvaluacion.setFechaRegistroConcepto(new Date());
+			nuevaEvaluacion.setNombreCoordinador(observacion);
 			nuevaEvaluacion.setObjFormato(formato);
 			evaluacion = evaluacionRepository.save(nuevaEvaluacion);
 
 		} else{
-
-			evaluacion = lstEvaluaciones.stream().filter(e -> "Por corregir".equals(e.getConcepto()))
-					.findFirst().orElse(null);
-
+			evaluacion = formato.getEvaluacion().get(0);
 		}
 
 		List<Docente> lstDocentes = docentes.stream().map(docenteId -> {
@@ -130,6 +128,40 @@ public class JpaApplication implements CommandLineRunner {
 		nuevaObservacion.setObjDocente(lstDocentes);
 
 		observacionRepository.save(nuevaObservacion);
+	}
+
+
+	@Transactional(readOnly = true)
+	public void consultarFormatoADocente(Integer idDocente) {
+		Docente docente = docenteRepository.findById(idDocente)
+				.orElseThrow(() -> new RuntimeException("Docente no encontrado con id: " + idDocente));
+
+		List<FormatoA> formatos = docente.getObjFormatoA();
+		List<Observacion> observaciones = docente.getObjObservacion();
+
+		System.out.println("Docente: " + docente.getNombre() + " " + docente.getApellido());
+		System.out.println("--------------------------------------------------");
+
+		for (FormatoA formato : formatos) {
+			System.out.println("Formato A: " + formato.getTitulo());
+			System.out.println("Objetivo General: " + formato.getObjetivoGeneral());
+			System.out.println("Objetivos Especificos: " + formato.getObjetivosEspecificos());
+			System.out.println("Estado: " + formato.getEstado().getEstadoActual());
+			System.out.println("Evaluaciones:");
+			Iterable<Evaluacion> evaluaciones = formato.getEvaluacion();
+			for (Evaluacion evaluacion : evaluaciones) {
+				System.out.println("  Evaluacion: " + evaluacion.getConcepto());
+				System.out.println("  Fecha Registro: " + evaluacion.getFechaRegistroConcepto());
+				System.out.println("  Nombre Coordinador: " + evaluacion.getNombreCoordinador());
+			}
+			System.out.println("Observaciones:");
+			for (Observacion observacion : observaciones) {
+				System.out.println("  Observacion: " + observacion.getObservacion());
+				System.out.println("  Fecha Registro: " + observacion.getFechaRegistro());
+			}
+			System.out.println("--------------------------------------------------");
+
+		}
 	}
 
 
