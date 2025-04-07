@@ -2,8 +2,13 @@ package com.jpa.models;
 
 import java.util.List;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import jakarta.persistence.*;
-import lombok.*;
+
+
 
 @Entity
 @Data
@@ -15,16 +20,16 @@ public class FormatoA {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Integer id;
 
-    @Column(nullable = false, length = 100)
-    private String nombreDirector;
-
     @Column(nullable = false)
     private String objetivoGeneral;
+
+    @Column(nullable = false)
+    private String titulo;
     
     @Column(nullable = false)
     private List<String> objetivosEspecificos;
 
-    @OneToOne(mappedBy = "objFormato")
+    @OneToOne(mappedBy = "objFormato", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private Estado estado;
 
     @OneToMany(mappedBy = "objFormato")
