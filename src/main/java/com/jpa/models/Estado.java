@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@Table(name = "estados")
 public class Estado {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,7 +24,7 @@ public class Estado {
     private Date fechaRegistro;
 
     @OneToOne
-    @JoinColumn(name = "idFormatoA", referencedColumnName = "id")
+    @JoinColumn(name = "idFormatoA", referencedColumnName = "id", unique = true)
     private FormatoA objFormato;
 
     

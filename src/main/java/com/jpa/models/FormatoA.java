@@ -12,6 +12,7 @@ import jakarta.persistence.*;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "formatosA")
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class FormatoA {
     @Id
@@ -21,13 +22,13 @@ public class FormatoA {
     @Column(nullable = false)
     private String objetivoGeneral;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String titulo;
     
     @Column(nullable = false)
-    private List<String> objetivosEspecificos;
+    private String objetivosEspecificos;
 
-    @OneToOne(mappedBy = "objFormato", cascade = {CascadeType.PERSIST})
+    @OneToOne(mappedBy = "objFormato", cascade = {CascadeType.PERSIST}, optional = false)
     private Estado estado;
 
     @OneToMany(mappedBy = "objFormato", fetch = FetchType.LAZY)

@@ -7,6 +7,7 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
+@Table(name = "formatosPPA")
 public class FormatoPPA extends FormatoA {
     @Column(nullable = false, length = 100)
     private String nombreEstudiante1;

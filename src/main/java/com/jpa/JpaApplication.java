@@ -61,7 +61,7 @@ public class JpaApplication implements CommandLineRunner {
 		FormatoA formatoPPA = new FormatoPPA("Juan Perez", "Maria Lopez");
 		formatoPPA.setTitulo("Titulo PPA "+ idDocente);
 		formatoPPA.setObjetivoGeneral("Objetivo General PPA");
-		formatoPPA.setObjetivosEspecificos(List.of("Objetivo Especifico 1"));
+		formatoPPA.setObjetivosEspecificos("Objetivo Especifico 1, Objetivo Especifico 2");
 
 		Estado estadoPPA = new Estado();
 		estadoPPA.setEstadoActual("Formualdo");

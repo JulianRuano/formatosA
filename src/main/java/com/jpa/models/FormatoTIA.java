@@ -7,6 +7,7 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
+@Table(name = "formatosTIA")
 public class FormatoTIA extends FormatoA{
     @Column(nullable = false, length = 100)
     private String nombreAsesor;
