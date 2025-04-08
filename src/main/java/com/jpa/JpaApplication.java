@@ -15,6 +15,7 @@ import com.jpa.models.FormatoA;
 import com.jpa.models.FormatoPPA;
 import com.jpa.models.Historico;
 import com.jpa.models.Observacion;
+import com.jpa.models.Rol;
 import com.jpa.repository.IDocenteRepository;
 import com.jpa.repository.IEvaluacionRepository;
 import com.jpa.repository.IFormatoRepository;
@@ -53,7 +54,8 @@ public class JpaApplication implements CommandLineRunner {
 		//List<Integer> docentes = List.of(1, 2);
 		//crearObservacion(docentes, "Observaciones de ROA", 1);
 		//consultarFormatoADocente(1);
-		listarObservacionesPorFormato(1);
+		//listarObservacionesPorFormato(1);
+		listarMiembrosComite();
 	}
 
 	@Transactional
@@ -224,4 +226,26 @@ public class JpaApplication implements CommandLineRunner {
         }
     }
 
+	public void listarMiembrosComite() {
+        List<Docente> docentes = docenteRepository.findAll();
+
+        System.out.println("================= MIEMBROS DEL COMITÉ =================");
+
+        for (Docente docente : docentes) {
+            List<Historico> historicos = docente.getObjHistorico();
+
+            if (historicos == null || historicos.isEmpty()) {
+                continue; // Este docente no tiene historial de roles
+            }
+
+            for (Historico historico : historicos) {
+                Rol rol = historico.getObjRol();
+
+                System.out.println("Docente: " + docente.getNombre() + " " + docente.getApellido());
+                System.out.println("Rol: " + (rol != null ? rol.getRol_asignado() : "Sin rol"));
+                System.out.println("Fecha inicio: " + historico.getFechaInicio());
+                System.out.println("----------------------------------------");
+            }
+        }
+    }
 }
